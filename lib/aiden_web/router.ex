@@ -9,6 +9,8 @@ defmodule AidenWeb.Router do
     pipe_through :api
 
     resources "/schools", SchoolController
+    resources "/students", StudentController, except: [:index]
+    get "/schools/:school_id/students", StudentController, :index
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

@@ -5,6 +5,7 @@ defmodule Aiden.Registrar.School do
   @primary_key {:id, Ecto.UUID, autogenerate: true}
   schema "schools" do
     field :name, :string
+    has_many :students, Aiden.Registrar.Student
 
     timestamps()
   end

@@ -17,4 +17,21 @@ defmodule Aiden.RegistrarFixtures do
 
     school
   end
+
+  @doc """
+  Generate a student.
+  """
+  def student_fixture(attrs \\ %{}) do
+    school = school_fixture()
+
+    {:ok, student} =
+      attrs
+      |> Enum.into(%{
+        name: "some name",
+        school_id: school.id
+      })
+      |> Aiden.Registrar.create_student()
+
+    student
+  end
 end
