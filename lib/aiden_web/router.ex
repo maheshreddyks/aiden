@@ -11,6 +11,8 @@ defmodule AidenWeb.Router do
     resources "/schools", SchoolController
     resources "/students", StudentController, except: [:index]
     get "/schools/:school_id/students", StudentController, :index
+
+    resources "/attendances", AttendanceController
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

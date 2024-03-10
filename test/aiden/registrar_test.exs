@@ -110,4 +110,77 @@ defmodule Aiden.RegistrarTest do
       assert %Ecto.Changeset{} = Registrar.change_student(student)
     end
   end
+
+  describe "attendances" do
+    alias Aiden.Registrar.Attendance
+
+    import Aiden.RegistrarFixtures
+
+    @invalid_attrs %{after_noon: nil, date: nil, fore_noon: nil}
+
+    test "list_attendances/0 returns all attendances" do
+      attendance = attendance_fixture()
+      assert Registrar.list_attendances() == [attendance]
+    end
+
+    test "get_attendance!/1 returns the attendance with given id" do
+      attendance = attendance_fixture()
+      assert Registrar.get_attendance!(attendance.id) == attendance
+    end
+
+    test "create_attendance/1 with valid data creates a attendance" do
+      valid_attrs = %{
+        after_noon: true,
+        date: ~D[2024-03-09],
+        fore_noon: true
+      }
+
+      student = student_fixture()
+      new_attrs = %{name: "some name", school_id: student.school_id, student_id: student.id}
+      valid_attrs = Map.merge(valid_attrs, new_attrs)
+
+      assert {:ok, %Attendance{} = attendance} = Registrar.create_attendance(valid_attrs)
+      assert attendance.after_noon == true
+      assert attendance.date == ~D[2024-03-09]
+      assert attendance.fore_noon == true
+    end
+
+    test "create_attendance/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Registrar.create_attendance(@invalid_attrs)
+    end
+
+    test "update_attendance/2 with valid data updates the attendance" do
+      attendance = attendance_fixture()
+
+      update_attrs = %{
+        after_noon: false,
+        date: ~D[2024-03-10],
+        fore_noon: false
+      }
+
+      assert {:ok, %Attendance{} = attendance} =
+               Registrar.update_attendance(attendance, update_attrs)
+
+      assert attendance.after_noon == false
+      assert attendance.date == ~D[2024-03-10]
+      assert attendance.fore_noon == false
+    end
+
+    test "update_attendance/2 with invalid data returns error changeset" do
+      attendance = attendance_fixture()
+      assert {:error, %Ecto.Changeset{}} = Registrar.update_attendance(attendance, @invalid_attrs)
+      assert attendance == Registrar.get_attendance!(attendance.id)
+    end
+
+    test "delete_attendance/1 deletes the attendance" do
+      attendance = attendance_fixture()
+      assert {:ok, %Attendance{}} = Registrar.delete_attendance(attendance)
+      assert_raise Ecto.NoResultsError, fn -> Registrar.get_attendance!(attendance.id) end
+    end
+
+    test "change_attendance/1 returns a attendance changeset" do
+      attendance = attendance_fixture()
+      assert %Ecto.Changeset{} = Registrar.change_attendance(attendance)
+    end
+  end
 end

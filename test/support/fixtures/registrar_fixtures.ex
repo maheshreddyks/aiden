@@ -34,4 +34,24 @@ defmodule Aiden.RegistrarFixtures do
 
     student
   end
+
+  @doc """
+  Generate a attendance.
+  """
+  def attendance_fixture(attrs \\ %{}) do
+    student = student_fixture()
+
+    {:ok, attendance} =
+      attrs
+      |> Enum.into(%{
+        after_noon: true,
+        date: ~D[2024-03-09],
+        fore_noon: true,
+        student_id: student.id,
+        school_id: student.school_id
+      })
+      |> Aiden.Registrar.create_attendance()
+
+    attendance
+  end
 end
