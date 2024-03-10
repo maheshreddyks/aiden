@@ -7,6 +7,8 @@ defmodule AidenWeb.Router do
 
   scope "/api", AidenWeb do
     pipe_through :api
+
+    resources "/schools", SchoolController
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
