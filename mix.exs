@@ -43,7 +43,9 @@ defmodule Aiden.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
-      {:bandit, "~> 1.2"}
+      {:bandit, "~> 1.2"},
+      {:skooma, "~> 0.2.0"},
+      {:uuid, "~> 1.1"}
     ]
   end
 

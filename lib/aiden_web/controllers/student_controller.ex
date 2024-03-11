@@ -8,7 +8,6 @@ defmodule AidenWeb.StudentController do
 
   def index(conn, params) do
     students = Registrar.list_students_by_school(params["school_id"])
-    IO.inspect(students)
     render(conn, :index, students: students)
   end
 

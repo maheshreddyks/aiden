@@ -14,6 +14,8 @@ defmodule AidenWeb.Router do
 
     resources "/attendances", AttendanceController
     get "/attendances_query", AttendanceController, :attendance_query
+
+    post "/attendances/new", AttendanceController, :create_attendance
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

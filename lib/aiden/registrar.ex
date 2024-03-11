@@ -358,4 +358,30 @@ defmodule Aiden.Registrar do
 
     Repo.all(query)
   end
+
+  @doc """
+  Creates a attendance.
+
+  ## Examples
+
+      iex> create_attendance(%{field: value})
+      {:ok, %Attendance{}}
+
+      iex> create_attendance(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_attendances(attrs \\ %{}) do
+    attrs =
+      attrs
+      |> Map.put(attrs["attendance_type"], attrs["attendance_status"])
+      |> Map.put("date", Date.utc_today())
+
+    case list_attendances_query(attrs) do
+      nil -> %Attendance{}
+      [attendance] -> attendance
+    end
+    |> Attendance.changeset(attrs)
+    |> Repo.insert_or_update()
+  end
 end

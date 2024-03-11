@@ -46,4 +46,25 @@ defmodule AidenWeb.AttendanceController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  def create_attendance(conn, %{"attendance" => attendance_params}) do
+    with :ok <- Aiden.Utils.skooma_validator(attendance_params, attendance_schema()),
+         {:ok, %Attendance{} = attendance} <-
+           Registrar.create_attendances(attendance_params) do
+      conn
+      |> put_status(:created)
+      |> put_resp_header("location", ~p"/api/attendances/#{attendance}")
+      |> render(:show, attendance: attendance)
+    end
+  end
+
+  ## Private Fns
+  defp attendance_schema() do
+    %{
+      :attendance_status => :bool,
+      :attendance_type => [:string, Aiden.Utils.validate_enum(["fore_noon", "after_noon"])],
+      :school_id => [:string, Aiden.Utils.is_uuid()],
+      :student_id => [:string, Aiden.Utils.is_uuid()]
+    }
+  end
 end
