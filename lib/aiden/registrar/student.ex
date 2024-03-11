@@ -17,5 +17,9 @@ defmodule Aiden.Registrar.Student do
     student
     |> cast(attrs, [:name, :school_id])
     |> validate_required([:name, :school_id])
+    |> unique_constraint(:students_id_school_id_index,
+      name: :students_id_school_id_index,
+      message: "Student has been already registered for a school"
+    )
   end
 end

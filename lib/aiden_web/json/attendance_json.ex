@@ -16,11 +16,15 @@ defmodule AidenWeb.AttendanceJSON do
   end
 
   defp data(%Attendance{} = attendance) do
+    IO.inspect(attendance)
+
     %{
       id: attendance.id,
       fore_noon: attendance.fore_noon,
       after_noon: attendance.after_noon,
-      date: attendance.date
+      date: attendance.date,
+      student_id: attendance.student_id,
+      school_id: attendance.school_id
     }
   end
 end

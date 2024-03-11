@@ -13,6 +13,7 @@ defmodule AidenWeb.Router do
     get "/schools/:school_id/students", StudentController, :index
 
     resources "/attendances", AttendanceController
+    get "/attendances_query", AttendanceController, :attendance_query
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

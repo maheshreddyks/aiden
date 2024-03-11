@@ -304,4 +304,58 @@ defmodule Aiden.Registrar do
   def change_attendance(%Attendance{} = attendance, attrs \\ %{}) do
     Attendance.changeset(attendance, attrs)
   end
+
+  @doc """
+  Returns the list of attendances based on query_params.
+
+  ## Examples
+
+      iex> list_attendances_query(params)
+      [%Attendance{}, ...]
+
+  """
+  def list_attendances_query(params) do
+    query =
+      from(attendance in Attendance)
+
+    query_keys = Map.keys(params)
+
+    query =
+      Enum.reduce(query_keys, query, fn query_key, query ->
+        if params[query_key] not in [nil, ""] do
+          case query_key do
+            "date" ->
+              where(query, date: ^params["date"])
+
+            "school_id" ->
+              where(query, school_id: ^params["school_id"])
+
+            "student_id" ->
+              where(query, student_id: ^params["student_id"])
+
+            _ ->
+              query
+          end
+        else
+          query
+        end
+      end)
+
+    query =
+      case params do
+        %{date: date, student_id: student_id} when is_binary(student_id) ->
+          where(query, date: ^date, student_id: ^student_id)
+
+        %{date: date} ->
+          where(query, date: ^date)
+
+        %{student_id: student_id} when is_binary(student_id) ->
+          where(query, student_id: ^student_id)
+
+        _ ->
+          query
+      end
+
+    Repo.all(query)
+  end
 end

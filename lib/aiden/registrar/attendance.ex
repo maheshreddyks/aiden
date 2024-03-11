@@ -19,5 +19,9 @@ defmodule Aiden.Registrar.Attendance do
     attendance
     |> cast(attrs, [:fore_noon, :after_noon, :date, :school_id, :student_id])
     |> validate_required([:fore_noon, :after_noon, :date, :school_id, :student_id])
+    |> unique_constraint(:attendances_school_id_student_id_date_index,
+      name: :attendances_school_id_student_id_date_index,
+      message: "Attendence has already been registered"
+    )
   end
 end

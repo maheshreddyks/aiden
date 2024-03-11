@@ -11,6 +11,11 @@ defmodule AidenWeb.AttendanceController do
     render(conn, :index, attendances: attendances)
   end
 
+  def attendance_query(conn, params) do
+    attendances = Registrar.list_attendances_query(params)
+    render(conn, :index, attendances: attendances)
+  end
+
   def create(conn, %{"attendance" => attendance_params}) do
     with {:ok, %Attendance{} = attendance} <- Registrar.create_attendance(attendance_params) do
       conn
@@ -28,7 +33,8 @@ defmodule AidenWeb.AttendanceController do
   def update(conn, %{"id" => id, "attendance" => attendance_params}) do
     attendance = Registrar.get_attendance!(id)
 
-    with {:ok, %Attendance{} = attendance} <- Registrar.update_attendance(attendance, attendance_params) do
+    with {:ok, %Attendance{} = attendance} <-
+           Registrar.update_attendance(attendance, attendance_params) do
       render(conn, :show, attendance: attendance)
     end
   end
