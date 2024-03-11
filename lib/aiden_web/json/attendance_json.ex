@@ -16,8 +16,6 @@ defmodule AidenWeb.AttendanceJSON do
   end
 
   defp data(%Attendance{} = attendance) do
-    IO.inspect(attendance)
-
     %{
       id: attendance.id,
       fore_noon: attendance.fore_noon,
